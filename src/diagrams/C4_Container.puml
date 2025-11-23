@@ -1,0 +1,44 @@
+@startuml
+title Cinemaabyss Container Diagram To be
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "Пользователь")
+
+Container(mobile, "Mobile application", "Приложение")
+Container(smart, "SmartTV", "Приложение для телевизоров")
+Container(site, "Web site", "Вэб приложение")
+System_Ext(external_payment, "External payment service", "API внешней платежной системы")
+System_Ext(recommendation_system, "External recommendation service", "Внешняя рекомендательная система")
+
+System_Boundary(system, "Cinemaabyss") {
+    Container(proxy, "Proxy service (API Gateway)", "GO", "Обработка и маршрутизация запросов внутри системы")
+    Container(films_service, "Films service", "GO", "Обработка данных о фильмах")
+    Container(user_service, "User service", "GO", "Аутентификация, профили")
+    Container(payment_service, "Payment service", "GO", "Интеграция с внешними платежными системами")
+    Container(events_service, "Event service", "GO", "Обработка событий",)
+    Container(kafka, "Kafka", "Посредник сообщений", "Обмен событиями между сервисами")
+    ContainerDb(postgres, "База данных", "PostgreSQL", "Хранение данных о пользователях, фильмах, платежах, подписках")
+}
+
+Rel(user, mobile, "использует")
+Rel(user, site, "использует")
+Rel(user, smart, "использует")
+Rel(mobile, proxy, "отправляет запросы")
+Rel(site, proxy, "отправляет запросы")
+Rel(smart, proxy, "отправляет запросы")
+Rel(proxy, films_service, "Маршрутизирует запросы")
+Rel(proxy, user_service, "Маршрутизирует запросы")
+Rel(proxy, payment_service, "Маршрутизирует запросы")
+Rel(proxy, events_service, "Маршрутизирует запросы")
+Rel(events_service, kafka, "Обрабатывает события")
+Rel(films_service, kafka, "Публикует события")
+Rel(user_service, kafka, "Публикует события")
+Rel(payment_service, kafka, "Публикует события")
+Rel(payment_service, external_payment, "Обрабатывает платежи")
+Rel(films_service, postgres, "Читает/пишет данные")
+Rel(user_service, postgres, "Читает/пишет данные")
+Rel(payment_service, postgres, "Читает/пишет данные")
+Rel(events_service, postgres, "Читает/пишет данные")
+Rel(films_service, recommendation_system, "Запрашивает")
+@enduml

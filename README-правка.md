@@ -99,7 +99,7 @@ GitHub Actions для непрерывной интеграции и разве�
 - Movies Service: http://localhost:8081
 - Events Service: http://localhost:8082
 - API Gateway (Proxy): http://localhost:8000
-- Kafka UI: http://localhost:8090
+- Kafka UI: http://localhost:8091
 
 3. Останавливаем сервисы:
    ```bash
@@ -219,4 +219,4 @@ chmod +x run-tests.sh
    ```
 2. Протестируйте постепенный переход, изменив переменную окружения MOVIES_MIGRATION_PERCENT в файле docker-compose.yml.
 
-3. Проверьте топики Kafka и сообщения через Kafka UI по адресу http://localhost:8090
+3. Проверьте топики Kafka и сообщения через Kafka UI по адресу http://localhost:8091
